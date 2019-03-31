@@ -40,3 +40,16 @@ def getKeyPointsGraph(filename, bodyAnalysisData):
 	for p in plist:
 		img.putpixel(p[0], p[1])
 	return img
+
+
+def getEllipticDict():
+	f = open('Data/elliptic')
+	ellipticDict = dict()
+	for line in f.readlines():
+		data = line.strip()
+		for segs in data.split(' '):
+			temp = segs.split(',')
+			t = temp[0]
+			v = temp[1]
+			ellipticDict[t] = v
+	return ellipticDict
