@@ -68,14 +68,3 @@ class BaiduApiUtil:
 		scoremapimg = cv2.resize(scoremapimg, self.picture_size, interpolation=cv2.INTER_NEAREST)
 		im_new_scoremapimg = np.where(scoremapimg == 1, 255, scoremapimg)
 		cv2.imwrite(self.filename + '-scoremap.png', im_new_scoremapimg)
-
-
-BAU = BaiduApiUtil()
-BAU.upload("resources/bikini.jpg")
-BAU.getBodySeg()
-data = BAU.getBodyAnalysis()
-# img = fu.getKeyPointsGraph("resources/bikini.jpg", data)
-#img.show()
-print(data["person_info"][0]["body_parts"])
-# print(data["person_info"][0]["body_parts"]["left_hip"]['y'])
-# print(data["person_info"][0]["body_parts"]["right_hip"]['y'])
