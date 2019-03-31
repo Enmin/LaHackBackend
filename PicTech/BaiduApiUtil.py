@@ -71,7 +71,11 @@ class BaiduApiUtil:
 
 
 BAU = BaiduApiUtil()
-BAU.upload("resources/test-model posture.jpg")
+BAU.upload("resources/bikini.jpg")
 BAU.getBodySeg()
-print(BAU.getBodyAnalysis())
-
+data = BAU.getBodyAnalysis()
+# img = fu.getKeyPointsGraph("resources/bikini.jpg", data)
+#img.show()
+print(data["person_info"][0]["body_parts"])
+# print(data["person_info"][0]["body_parts"]["left_hip"]['y'])
+# print(data["person_info"][0]["body_parts"]["right_hip"]['y'])
