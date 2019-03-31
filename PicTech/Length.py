@@ -29,7 +29,7 @@ class Length:
         self.shoulder_hi = max(self.left_shoulder, self.right_shoulder)
         self.shoulder_low = min(self.left_shoulder, self.right_shoulder)
 
-        self.ankle = self.ankle_left + self.ankle_right / 2
+        self.ankle = (self.ankle_left + self.ankle_right) / 2
         self.shoulder = (self.shoulder_low + self.shoulder_hi) / 2
         self.hip = (self.left_hip_y + self.right_hip_y) / 2
 
@@ -76,4 +76,5 @@ class Length:
     def leg_measure(self):
         # Get leg length
         leg_measure = - self.hip + self.ankle
+
         return leg_measure
