@@ -1,6 +1,7 @@
 import configparser
 from PIL import Image
 
+
 def readConfigSections(filename):
 	cf = configparser.ConfigParser()
 	cf.read(filename)
@@ -53,3 +54,9 @@ def getEllipticDict():
 			v = temp[1]
 			ellipticDict[t] = v
 	return ellipticDict
+
+
+def writeToFile(filename, data):
+	fh = open(filename, "w+")
+	fh.write(data)
+	fh.close()

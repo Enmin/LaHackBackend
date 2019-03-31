@@ -13,7 +13,7 @@ class Length:
         # Use Baidu API to get images
         self.orig_name = file_name
         BAU = BaiduApiUtil.BaiduApiUtil()
-        BAU.upload("resources/" + self.orig_name)
+        BAU.upload(self.orig_name)
         BAU.getBodySeg()
         self.data = BAU.getBodyAnalysis()
         self.left_hip_y = self.data["person_info"][0]["body_parts"]["left_hip"]['y']
@@ -40,11 +40,11 @@ class Length:
         self.height = None
 
     def input_height(self, height_input):
-        self.height = height_input;
+        self.height = height_input
 
     def hip_measure(self):
 
-        name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
+        name = self.orig_name.split('.')[0] + "-labelmap.png"
         img = cv2.imread(name)
         # print(img.shape)
         # print(int(hip_y))
@@ -61,7 +61,7 @@ class Length:
         # Get y-position for chest
         chest_y = self.shoulder - self.dist_y
 
-        name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
+        name = self.orig_name.split('.')[0] + "-labelmap.png"
         img = cv2.imread(name)
         # Each [0,0,0] becomes [True, True, True], so divide by 3
         chest_measure = np.sum(img[int(chest_y), :, :] == 255) / 3
@@ -73,7 +73,7 @@ class Length:
         # Get y-position for waist
         waist_y = self.dist_y + self.hip
 
-        name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
+        name = self.orig_name.split('.')[0] + "-labelmap.png"
         img = cv2.imread(name)
         # Each [0,0,0] becomes [True, True, True], so divide by 3
         waist_measure = np.sum(img[int(waist_y), :, :] == 255) / 3
