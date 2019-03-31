@@ -16,13 +16,14 @@ class Length:
         BAU.upload("resources/" + self.orig_name)
         BAU.getBodySeg()
         self.data = BAU.getBodyAnalysis()
-
         self.left_hip_y = self.data["person_info"][0]["body_parts"]["left_hip"]['y']
         self.right_hip_y = self.data["person_info"][0]["body_parts"]["right_hip"]['y']
         self.left_shoulder = self.data["person_info"][0]["body_parts"]["left_shoulder"]['y']
         self.right_shoulder = self.data["person_info"][0]["body_parts"]["right_shoulder"]['y']
         self.ankle_left = self.data["person_info"][0]["body_parts"]["left_ankle"]['y']
         self.ankle_right = self.data["person_info"][0]["body_parts"]["right_ankle"]['y']
+
+        self.pixel_height = self.data["person_info"][0]["location"]["height"]
 
         self.hip_hi = max(self.left_hip_y, self.right_hip_y)
         self.hip_low = min(self.left_hip_y, self.right_hip_y)
@@ -51,6 +52,9 @@ class Length:
         # ==0 checks for black pixels, subtract black to get white
         # Each [0,0,0] becomes [True, True, True], so divide by 3
         hip_measure = np.sum(img[int(self.hip), :,:] == 255)/3
+        if self.height is not None:
+            hip_measure = self.height * hip_measure/self.pixel_height
+
         return hip_measure
 
     def chest_measure(self):
@@ -61,6 +65,8 @@ class Length:
         img = cv2.imread(name)
         # Each [0,0,0] becomes [True, True, True], so divide by 3
         chest_measure = np.sum(img[int(chest_y), :, :] == 255) / 3
+        if self.height is not None:
+            chest_measure = self.height * chest_measure/self.pixel_height
         return chest_measure
 
     def waist_measure(self):
@@ -70,11 +76,14 @@ class Length:
         name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
         img = cv2.imread(name)
         # Each [0,0,0] becomes [True, True, True], so divide by 3
-        chest_measure = np.sum(img[int(waist_y), :, :] == 255) / 3
-        return chest_measure
+        waist_measure = np.sum(img[int(waist_y), :, :] == 255) / 3
+        if self.height is not None:
+            waist_measure = self.height * waist_measure/self.pixel_height
+        return waist_measure
 
     def leg_measure(self):
         # Get leg length
         leg_measure = - self.hip + self.ankle
-
+        if self.height is not None:
+            leg_measure = self.height * leg_measure/self.pixel_height
         return leg_measure
