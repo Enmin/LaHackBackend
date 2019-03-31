@@ -35,7 +35,12 @@ class Length:
 
         # 1/4 shoulder to hip, averaged
         self.dist_y = (self.shoulder_hi - self.hip_hi + self.shoulder_low - self.hip_low) / 8
-        
+
+        self.height = None
+
+    def input_height(self, height_input):
+        self.height = height_input;
+
     def hip_measure(self):
 
         name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
@@ -45,7 +50,7 @@ class Length:
         # print(np.sum(img[int(hip_y),700:900, :] == 0))
         # ==0 checks for black pixels, subtract black to get white
         # Each [0,0,0] becomes [True, True, True], so divide by 3
-        hip_measure = 1200 - np.sum(img[int(self.hip), :,:] == 0)/3
+        hip_measure = np.sum(img[int(self.hip), :,:] == 255)/3
         return hip_measure
 
     def chest_measure(self):
@@ -55,7 +60,7 @@ class Length:
         name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
         img = cv2.imread(name)
         # Each [0,0,0] becomes [True, True, True], so divide by 3
-        chest_measure = 1200 - np.sum(img[int(chest_y), :, :] == 0) / 3
+        chest_measure = np.sum(img[int(chest_y), :, :] == 255) / 3
         return chest_measure
 
     def waist_measure(self):
@@ -65,10 +70,10 @@ class Length:
         name = "resources/" + self.orig_name.split('.')[0] + "-labelmap.png"
         img = cv2.imread(name)
         # Each [0,0,0] becomes [True, True, True], so divide by 3
-        chest_measure = 1200 - np.sum(img[int(waist_y), :, :] == 0) / 3
+        chest_measure = np.sum(img[int(waist_y), :, :] == 255) / 3
         return chest_measure
 
     def leg_measure(self):
         # Get leg length
-        leg_measure = self.hip - self.ankle
+        leg_measure = - self.hip + self.ankle
         return leg_measure
