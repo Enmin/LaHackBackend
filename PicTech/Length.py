@@ -9,13 +9,14 @@ from PIL import Image
 
 
 class Length:
-    def __init__(self):
+    def __init__(self, file_name):
         # Use Baidu API to get images
-        self.orig_name = "bikini.jpg"
+        self.orig_name = file_name
         BAU = BaiduApiUtil.BaiduApiUtil()
         BAU.upload("resources/" + self.orig_name)
         BAU.getBodySeg()
         self.data = BAU.getBodyAnalysis()
+
         self.left_hip_y = self.data["person_info"][0]["body_parts"]["left_hip"]['y']
         self.right_hip_y = self.data["person_info"][0]["body_parts"]["right_hip"]['y']
         self.left_shoulder = self.data["person_info"][0]["body_parts"]["left_shoulder"]['y']
@@ -23,14 +24,14 @@ class Length:
         self.ankle_left = self.data["person_info"][0]["body_parts"]["left_ankle"]['y']
         self.ankle_right = self.data["person_info"][0]["body_parts"]["right_ankle"]['y']
 
-        self.ankle = self.ankle_left + self.ankle_right / 2
-        self.shoulder = (self.shoulder_low + self.shoulder_hi) / 2
-        self.hip = (self.left_hip_y + self.right_hip_y) / 2
-
         self.hip_hi = max(self.left_hip_y, self.right_hip_y)
         self.hip_low = min(self.left_hip_y, self.right_hip_y)
         self.shoulder_hi = max(self.left_shoulder, self.right_shoulder)
         self.shoulder_low = min(self.left_shoulder, self.right_shoulder)
+
+        self.ankle = self.ankle_left + self.ankle_right / 2
+        self.shoulder = (self.shoulder_low + self.shoulder_hi) / 2
+        self.hip = (self.left_hip_y + self.right_hip_y) / 2
 
         # 1/4 shoulder to hip, averaged
         self.dist_y = (self.shoulder_hi - self.hip_hi + self.shoulder_low - self.hip_low) / 8
