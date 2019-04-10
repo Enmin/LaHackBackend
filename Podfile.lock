@@ -1,0 +1,36 @@
+PODS:
+  - AWSCognito (2.9.3):
+    - AWSCore (= 2.9.3)
+  - AWSCore (2.9.3)
+  - AWSS3 (2.9.3):
+    - AWSCore (= 2.9.3)
+  - Charts (3.2.2):
+    - Charts/Core (= 3.2.2)
+  - Charts/Core (3.2.2)
+  - FLAnimatedImage (1.0.12)
+
+DEPENDENCIES:
+  - AWSCognito
+  - AWSCore
+  - AWSS3
+  - Charts
+  - FLAnimatedImage
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AWSCognito
+    - AWSCore
+    - AWSS3
+    - Charts
+    - FLAnimatedImage
+
+SPEC CHECKSUMS:
+  AWSCognito: 508185a281676e58914f297dce13de8d7ac01fd4
+  AWSCore: 5cbb6c6ccfad4b55e494c2e8df87781512f7881e
+  AWSS3: f016dddb6de858f0cc328d4e10a551299a66a3bb
+  Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+
+PODFILE CHECKSUM: 040ef1d911727370e48a05dc00ad0fae288ffa2b
+
+COCOAPODS: 1.6.1
