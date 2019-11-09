@@ -8,7 +8,7 @@ def readConfigSections(filename):
 	return cf.sections()
 
 
-def readConfig(category, filename="PicTech.conf"):
+def readConfig(filename, category):
 	cf = configparser.ConfigParser()
 	cf.read(filename)
 	info = dict()
@@ -43,8 +43,8 @@ def getKeyPointsGraph(filename, bodyAnalysisData):
 	return img
 
 
-def getEllipticDict():
-	f = open('Data/elliptic')
+def getEllipticDict(path):
+	f = open(path)
 	ellipticDict = dict()
 	for line in f.readlines():
 		data = line.strip()

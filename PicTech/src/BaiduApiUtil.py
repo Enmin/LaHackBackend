@@ -10,8 +10,8 @@ from PIL import Image
 
 class BaiduApiUtil:
 
-	def __init__(self):
-		keyInfo = fu.readConfig('Baidu_MeasuringTech', 'PicTech.conf')
+	def __init__(self, configPath, configSection):
+		keyInfo = fu.readConfig(configPath, configSection)
 		self.appid = keyInfo['appid']
 		self.api_key = keyInfo['api_key']
 		self.secret_key = keyInfo['secret_key']
@@ -28,8 +28,8 @@ class BaiduApiUtil:
 		self.picture_size = img.size
 		self.picture_format = img.format
 
-	def getAccessToken(self):
-		keyInfo = fu.readConfig('Access_Token', 'PicTech.conf')
+	def getAccessToken(self, configPath, configSection):
+		keyInfo = fu.readConfig(configPath, configSection)
 		host = keyInfo['addr'] % (keyInfo['grant_type'], keyInfo['client_id'], keyInfo['client_secret'])
 		response = requests.post(host)
 		if response.status_code != 200:
@@ -42,20 +42,24 @@ class BaiduApiUtil:
 		return content['refresh_token']
 
 	def getBodyAnalysis(self):
-		return self.client.bodyAnalysis(self.picture)
+		response = self.client.bodyAnalysis(self.picture)
+		if 'error_code' in response.keys():
+			print(response['error_msg'])
+			exit(-1)
+		return response
+
 
 	def getBodySeg(self):
-		result = self.client.bodySeg(self.picture)
-
-		foreground = base64.b64decode(result['foreground'])
+		result = self.client.bodySeg(self.picture, {'type':'labelmap'})
+		# foreground = base64.b64decode(result['foreground'])
 		labelmap = base64.b64decode(result['labelmap'])
-		scoremap = base64.b64decode(result['scoremap'])
+		# scoremap = base64.b64decode(result['scoremap'])
 
-		nparr_foreground = np.fromstring(foreground, np.uint8)
-		foregroundimg = cv2.imdecode(nparr_foreground, 1)
-		foregroundimg = cv2.resize(foregroundimg, self.picture_size, interpolation=cv2.INTER_NEAREST)
-		im_new_foreground = np.where(foregroundimg == 1, 10, foregroundimg)
-		cv2.imwrite(self.filename + '-foreground.png', im_new_foreground)
+		# nparr_foreground = np.fromstring(foreground, np.uint8)
+		# foregroundimg = cv2.imdecode(nparr_foreground, 1)
+		# foregroundimg = cv2.resize(foregroundimg, self.picture_size, interpolation=cv2.INTER_NEAREST)
+		# im_new_foreground = np.where(foregroundimg == 1, 10, foregroundimg)
+		# cv2.imwrite(self.filename + '-foreground.png', im_new_foreground)
 
 		nparr_labelmap = np.fromstring(labelmap, np.uint8)
 		labelmapimg = cv2.imdecode(nparr_labelmap, 1)
@@ -63,8 +67,8 @@ class BaiduApiUtil:
 		im_new_labelmapimg = np.where(labelmapimg == 1, 255, labelmapimg)
 		cv2.imwrite(self.filename + '-labelmap.png', im_new_labelmapimg)
 
-		nparr_scoremap = np.fromstring(scoremap, np.uint8)
-		scoremapimg = cv2.imdecode(nparr_scoremap, 1)
-		scoremapimg = cv2.resize(scoremapimg, self.picture_size, interpolation=cv2.INTER_NEAREST)
-		im_new_scoremapimg = np.where(scoremapimg == 1, 255, scoremapimg)
-		cv2.imwrite(self.filename + '-scoremap.png', im_new_scoremapimg)
+		# nparr_scoremap = np.fromstring(scoremap, np.uint8)
+		# scoremapimg = cv2.imdecode(nparr_scoremap, 1)
+		# scoremapimg = cv2.resize(scoremapimg, self.picture_size, interpolation=cv2.INTER_NEAREST)
+		# im_new_scoremapimg = np.where(scoremapimg == 1, 255, scoremapimg)
+		# cv2.imwrite(self.filename + '-scoremap.png', im_new_scoremapimg)
